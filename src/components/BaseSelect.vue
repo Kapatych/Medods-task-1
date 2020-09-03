@@ -8,11 +8,11 @@
     >
       <input
         class="select__input"
+        :class="{ 'select__input--active': active }"
         ref="select"
-        :value="value"
+        :value="multi ? normalizeValues : value"
         type="text"
         readonly="readonly"
-        :class="{ 'select__input--active': active }"
         :placeholder="label"
       />
       <span class="select__icon" @click.stop="toggleHandler"></span>
@@ -22,6 +22,7 @@
         class="select__option"
         v-for="option in options"
         :key="option"
+        :class="{ 'select__option--active': selectedItems.includes(option) }"
         @click="pickItemHandler"
       >
         {{ option }}
@@ -35,21 +36,45 @@ import formFieldMixin from "@/mixins/formFieldMixin";
 export default {
   mixins: [formFieldMixin],
   data: () => ({
-    selectedItem: "",
+    selectedItems: [],
     active: false
   }),
   props: {
+    multi: {
+      type: Boolean,
+      default: false
+    },
     options: {
       type: Array,
       required: true
     }
   },
+  computed: {
+    normalizeValues() {
+      return this.selectedItems.join(", ");
+    }
+  },
   methods: {
     toggleHandler() {
-      this.active = !this.active
+      this.active = !this.active;
     },
     pickItemHandler(event) {
-      this.$emit("input", event.target.innerText);
+      if (this.multi) {
+        if (this.value.includes(event.target.innerText)) {
+          // delete value
+          let idx = this.selectedItems.findIndex(
+            item => item === event.target.innerText
+          );
+          this.selectedItems.splice(idx, 1);
+          this.$emit("input", this.selectedItems);
+        } else {
+          // add value
+          this.selectedItems.push(event.target.innerText);
+          this.$emit("input", this.selectedItems);
+        }
+      } else {
+        this.$emit("input", event.target.innerText);
+      }
       this.active = false;
     },
     outsideClickHandler(e) {
@@ -60,6 +85,7 @@ export default {
   },
   mounted() {
     document.addEventListener("click", e => this.outsideClickHandler(e));
+    this.selectedItems = [...this.value];
   },
   beforeDestroy() {
     document.removeEventListener("click", e => this.outsideClickHandler(e));
@@ -70,6 +96,10 @@ export default {
 <style lang="scss" scoped>
 .select {
   position: relative;
+  min-width: 260px;
+  &:not(:first-child) {
+    margin-left: 10px;
+  }
 }
 .select__label {
   font-weight: 600;
@@ -77,7 +107,6 @@ export default {
 .select__body {
   position: relative;
 }
-
 .select__icon {
   content: "";
   position: absolute;
@@ -127,6 +156,11 @@ export default {
 .select__option {
   cursor: pointer;
   margin-top: 10px;
+}
+
+.select__option--active {
+  text-decoration: line-through;
+  color: grey;
 }
 /*select {*/
 /*  margin-bottom: 10px;*/

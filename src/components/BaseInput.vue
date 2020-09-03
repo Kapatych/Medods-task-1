@@ -30,6 +30,7 @@ export default {
 <style lang="scss" scoped>
 .field {
   width: 100%;
+  min-width: 260px;
   &:not(:first-child) {
     margin-left: 10px;
   }

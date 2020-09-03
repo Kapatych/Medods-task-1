@@ -3,7 +3,7 @@
     <div class="create-client__container">
       <div class="create-client__wrapper">
         <h1 class="create-client__title">Новый клиент</h1>
-        <form @click.prevent="submitHandler">
+        <form @submit.prevent="submitHandler">
           <div class="fields-row">
             <BaseInput
               label="Фамилия"
@@ -29,6 +29,14 @@
           </div>
 
           <div class="fields-row">
+            <BaseSelect
+              label="Группа клиентов"
+              v-model="client.category"
+              :options="category"
+              name="doctor"
+              :multi="true"
+              placeholder="Группа клиентов"
+            />
             <BaseSelect
               label="Лечащий врач"
               v-model="client.doctor"
@@ -86,7 +94,16 @@
             />
           </div>
 
-          <h3>Паспорт</h3>
+          <h3>Документ</h3>
+          <div class="fields-row">
+            <BaseSelect
+              label="Тип документа"
+              v-model="client.document"
+              :options="documents"
+              name="doctor"
+              placeholder="Лечащий врач"
+            />
+          </div>
           <button type="submit">Создать</button>
         </form>
       </div>
@@ -99,11 +116,15 @@
 export default {
   data: () => ({
     doctors: ["Иванов", "Захаров", "Чернышева"],
+    category: ["VIP", "Проблемные", "ОМС"],
+    documents: ["Паспорт", "Свидетельство о рождении", "Вод. удостоверение"],
     client: {
       surname: "",
       name: "",
       middleName: "",
-      doctor: ""
+      doctor: "",
+      category: [],
+      document: ""
     }
   }),
   methods: {
@@ -141,7 +162,7 @@ export default {
 
 .fields-row {
   display: flex;
-  justify-content: space-between;
+  /*justify-content: space-between;*/
   align-items: center;
 }
 </style>
