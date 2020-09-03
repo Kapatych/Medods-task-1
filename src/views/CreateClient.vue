@@ -28,6 +28,16 @@
             />
           </div>
 
+          <div class="fields-row">
+            <BaseSelect
+              label="Лечащий врач"
+              v-model="client.doctor"
+              :options="doctors"
+              name="doctor"
+              placeholder="Лечащий врач"
+            />
+          </div>
+
           <h3>Адрес</h3>
           <div class="fields-row">
             <BaseInput
@@ -88,15 +98,17 @@
 // import { required } from "vuelidate/lib/validators";
 export default {
   data: () => ({
+    doctors: ["Иванов", "Захаров", "Чернышева"],
     client: {
       surname: "",
       name: "",
-      middleName: ""
+      middleName: "",
+      doctor: ""
     }
   }),
   methods: {
     submitHandler() {
-      console.log(this.title);
+      console.log("created successfully");
     }
   }
 };
