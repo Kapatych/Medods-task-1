@@ -51,6 +51,12 @@
               type="text"
               placeholder="79123456789"
             />
+            <BaseRadioset
+              label="Пол"
+              name="gender"
+              v-model="client.gender"
+              :options="gender"
+            />
           </div>
           <div class="fields-row">
             <BaseSelect
@@ -160,7 +166,7 @@
               label="Кем выдан"
               v-model="client.passport.place"
               type="text"
-              class="field--wide"
+              inputClass="wide"
               placeholder="ТП №1 отдела УФМС России по Санкт-Петербургу"
             />
           </div>
@@ -178,6 +184,7 @@ export default {
     doctors: ["Иванов", "Захаров", "Чернышева"],
     category: ["VIP", "Проблемные", "ОМС"],
     documents: ["Паспорт", "Свидетельство о рождении", "Вод. удостоверение"],
+    gender: ["Мужчина", "Женщина"],
     client: {
       surname: "",
       name: "",
@@ -188,7 +195,7 @@ export default {
         year: null
       },
       phoneNumber: null,
-      sex: "man",
+      gender: "man",
       category: [],
       doctor: "",
       address: {
@@ -215,21 +222,20 @@ export default {
   methods: {
     submitHandler() {
       let data = {
-        surname: this.client.surname,
-        name: this.client.name,
-        middleName: this.client.middleName,
-        doctor: this.client.doctor,
-        category: this.client.category,
-        dateBirth: +new Date(
+        ...this.client,
+        birth: +new Date(
           this.client.birth.year,
           this.client.birth.month - 1,
           this.client.birth.day
         ),
-        issuanceDate: +new Date(
-          this.client.passport.issuance.year,
-          this.client.passport.issuance.month - 1,
-          this.client.passport.issuance.day
-        )
+        passport: {
+          ...this.client.passport,
+          issuance: +new Date(
+            this.client.passport.issuance.year,
+            this.client.passport.issuance.month - 1,
+            this.client.passport.issuance.day
+          )
+        }
       };
       console.log(data);
     }
@@ -264,10 +270,11 @@ export default {
 
 .fields-row {
   display: flex;
-  align-items: center;
+  /*align-items: center;*/
   margin-bottom: 10px;
 }
 .fields-group {
+  width: 100%;
   max-width: 260px;
   &:not(:first-child) {
     margin-left: 10px;

@@ -35,7 +35,7 @@ export default {
     margin-left: 10px;
   }
 
-  &--wide {
+  &.wide {
     max-width: none;
   }
 }
