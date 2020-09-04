@@ -1,5 +1,5 @@
 <template>
-  <div class="field">
+  <div class="field" :class="inputClass">
     <label v-if="label">
       {{ label }}
     </label>
@@ -30,16 +30,19 @@ export default {
 <style lang="scss" scoped>
 .field {
   width: 100%;
-  min-width: 260px;
+  max-width: 260px;
   &:not(:first-child) {
     margin-left: 10px;
+  }
+
+  &--wide {
+    max-width: none;
   }
 }
 label {
   font-weight: 600;
 }
 input {
-  margin-bottom: 10px;
   padding: 10px 15px;
   width: 100%;
   border: 1px solid rgba(31, 32, 65, 0.25);

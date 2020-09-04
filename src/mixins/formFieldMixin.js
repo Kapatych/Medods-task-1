@@ -5,7 +5,8 @@ export default {
       type: String,
       default: ""
     },
-    value: [String, Number, Array]
+    value: [String, Number, Array],
+    inputClass: String
   },
   methods: {
     updateValue(event) {

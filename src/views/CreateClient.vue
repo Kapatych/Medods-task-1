@@ -9,40 +9,62 @@
               label="Фамилия"
               v-model="client.surname"
               type="text"
-              name="surname"
-              placeholder="Фамилия"
+              placeholder="Иванов"
             />
             <BaseInput
               label="Имя"
               v-model="client.name"
               type="text"
-              name="name"
-              placeholder="Имя"
+              placeholder="Иван"
             />
             <BaseInput
               label="Отчество"
               v-model="client.middleName"
               type="text"
-              name="middle name"
-              placeholder="Отчество"
+              placeholder="Иванович"
             />
           </div>
-
+          <div class="fields-row">
+            <div class="fields-group">
+              <div class="fields-group__label">Дата рождения</div>
+              <div class="fields-group__content">
+                <BaseInput
+                  v-model="client.birth.day"
+                  type="text"
+                  placeholder="10"
+                />
+                <BaseInput
+                  v-model="client.birth.month"
+                  type="text"
+                  placeholder="10"
+                />
+                <BaseInput
+                  v-model="client.birth.year"
+                  type="text"
+                  placeholder="2010"
+                />
+              </div>
+            </div>
+            <BaseInput
+              label="Номер телефона"
+              v-model="client.phoneNumber"
+              type="text"
+              placeholder="79123456789"
+            />
+          </div>
           <div class="fields-row">
             <BaseSelect
               label="Группа клиентов"
               v-model="client.category"
               :options="category"
-              name="doctor"
               :multi="true"
-              placeholder="Группа клиентов"
+              placeholder="Выберите группу"
             />
             <BaseSelect
               label="Лечащий врач"
               v-model="client.doctor"
               :options="doctors"
-              name="doctor"
-              placeholder="Лечащий врач"
+              placeholder="Выберите врача"
             />
           </div>
 
@@ -50,47 +72,41 @@
           <div class="fields-row">
             <BaseInput
               label="Индекс"
-              v-model="client.index"
+              v-model="client.address.postalCode"
               type="text"
-              name="index"
-              placeholder="Индекс"
+              placeholder="192007"
             />
             <BaseInput
               label="Страна"
-              v-model="client.country"
+              v-model="client.address.country"
               type="text"
-              name="country"
-              placeholder="Страна"
+              placeholder="Россия"
             />
             <BaseInput
               label="Область"
-              v-model="client.region"
+              v-model="client.address.region"
               type="text"
-              name="region"
-              placeholder="Область"
+              placeholder="Санкт-Петербург"
             />
           </div>
           <div class="fields-row">
             <BaseInput
               label="Город"
-              v-model="client.city"
+              v-model="client.address.city"
               type="text"
-              name="city"
-              placeholder="Город"
+              placeholder="Санкт-Петербург"
             />
             <BaseInput
               label="Улица"
-              v-model="client.street"
+              v-model="client.address.street"
               type="text"
-              name="street"
-              placeholder="Улица"
+              placeholder="Невский проспект"
             />
             <BaseInput
               label="Дом "
-              v-model="client.house"
+              v-model="client.address.houseNumber"
               type="text"
-              name="house"
-              placeholder="Дом"
+              placeholder="12"
             />
           </div>
 
@@ -98,10 +114,54 @@
           <div class="fields-row">
             <BaseSelect
               label="Тип документа"
-              v-model="client.document"
+              v-model="client.passport.type"
               :options="documents"
-              name="doctor"
-              placeholder="Лечащий врач"
+              placeholder="Выберите документ"
+            />
+            <div class="fields-group">
+              <div class="fields-group__content">
+                <BaseInput
+                  label="Серия"
+                  v-model="client.passport.series"
+                  type="text"
+                  placeholder="4010"
+                />
+                <BaseInput
+                  label="Номер"
+                  v-model="client.passport.number"
+                  type="text"
+                  placeholder="123456"
+                />
+              </div>
+            </div>
+            <div class="fields-group">
+              <div class="fields-group__label">Дата выдачи</div>
+              <div class="fields-group__content">
+                <BaseInput
+                  v-model="client.passport.issuance.day"
+                  type="text"
+                  placeholder="12"
+                />
+                <BaseInput
+                  v-model="client.passport.issuance.month"
+                  type="text"
+                  placeholder="12"
+                />
+                <BaseInput
+                  v-model="client.passport.issuance.year"
+                  type="text"
+                  placeholder="2012"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="fields-row">
+            <BaseInput
+              label="Кем выдан"
+              v-model="client.passport.place"
+              type="text"
+              class="field--wide"
+              placeholder="ТП №1 отдела УФМС России по Санкт-Петербургу"
             />
           </div>
           <button type="submit">Создать</button>
@@ -122,14 +182,56 @@ export default {
       surname: "",
       name: "",
       middleName: "",
-      doctor: "",
+      birth: {
+        day: null,
+        month: null,
+        year: null
+      },
+      phoneNumber: null,
+      sex: "man",
       category: [],
-      document: ""
+      doctor: "",
+      address: {
+        postalCode: "",
+        country: "",
+        region: "",
+        city: "",
+        street: "",
+        houseNumber: ""
+      },
+      passport: {
+        type: "",
+        series: "",
+        number: "",
+        issuance: {
+          day: null,
+          month: null,
+          year: null
+        },
+        place: ""
+      }
     }
   }),
   methods: {
     submitHandler() {
-      console.log("created successfully");
+      let data = {
+        surname: this.client.surname,
+        name: this.client.name,
+        middleName: this.client.middleName,
+        doctor: this.client.doctor,
+        category: this.client.category,
+        dateBirth: +new Date(
+          this.client.birth.year,
+          this.client.birth.month - 1,
+          this.client.birth.day
+        ),
+        issuanceDate: +new Date(
+          this.client.passport.issuance.year,
+          this.client.passport.issuance.month - 1,
+          this.client.passport.issuance.day
+        )
+      };
+      console.log(data);
     }
   }
 };
@@ -162,7 +264,19 @@ export default {
 
 .fields-row {
   display: flex;
-  /*justify-content: space-between;*/
   align-items: center;
+  margin-bottom: 10px;
+}
+.fields-group {
+  max-width: 260px;
+  &:not(:first-child) {
+    margin-left: 10px;
+  }
+}
+.fields-group__label {
+  font-weight: 600;
+}
+.fields-group__content {
+  display: flex;
 }
 </style>

@@ -13,7 +13,7 @@
         :value="multi ? normalizeValues : value"
         type="text"
         readonly="readonly"
-        :placeholder="label"
+        v-bind="$attrs"
       />
       <span class="select__icon" @click.stop="toggleHandler"></span>
     </div>
