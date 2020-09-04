@@ -69,6 +69,12 @@
               :options="doctors"
               placeholder="Выберите врача"
             />
+            <BaseCheckset
+              label="Уведомления"
+              :options="notifications"
+              v-model="client.notifications"
+              name="notifications"
+            />
           </div>
 
           <h3>Адрес</h3>
@@ -178,6 +184,7 @@ export default {
     category: ["VIP", "Проблемные", "ОМС"],
     documents: ["Паспорт", "Свидетельство о рождении", "Вод. удостоверение"],
     gender: ["Мужчина", "Женщина"],
+    notifications: ["Не отправлять СМС"],
     client: {
       surname: "",
       name: "",
@@ -191,6 +198,7 @@ export default {
       gender: "man",
       category: [],
       doctor: "",
+      notifications: [],
       address: {
         postalCode: "",
         country: "",

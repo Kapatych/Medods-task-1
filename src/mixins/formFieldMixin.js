@@ -5,7 +5,7 @@ export default {
       type: String,
       default: ""
     },
-    value: [String, Number, Array],
+    value: [String, Number, Array, Boolean],
     inputClass: String
   },
   methods: {

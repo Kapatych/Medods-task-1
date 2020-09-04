@@ -23,7 +23,7 @@
         v-for="option in options"
         :key="option"
         :class="{ 'select__option--active': selectedItems.includes(option) }"
-        @click="pickItemHandler"
+        @click="selectItemHandler(option)"
       >
         {{ option }}
       </p>
@@ -58,22 +58,19 @@ export default {
     toggleHandler() {
       this.active = !this.active;
     },
-    pickItemHandler(event) {
+    selectItemHandler(item) {
       if (this.multi) {
-        if (this.value.includes(event.target.innerText)) {
+        if (this.value.includes(item)) {
           // delete value
-          let idx = this.selectedItems.findIndex(
-            item => item === event.target.innerText
-          );
+          let idx = this.selectedItems.findIndex(i => i === item);
           this.selectedItems.splice(idx, 1);
-          this.$emit("input", this.selectedItems);
         } else {
           // add value
-          this.selectedItems.push(event.target.innerText);
-          this.$emit("input", this.selectedItems);
+          this.selectedItems.push(item);
         }
+        this.$emit("input", this.selectedItems);
       } else {
-        this.$emit("input", event.target.innerText);
+        this.$emit("input", item);
       }
       this.active = false;
     },
@@ -155,24 +152,11 @@ export default {
 
 .select__option {
   cursor: pointer;
-  margin-top: 10px;
+  padding-top: 10px;
 }
 
 .select__option--active {
   text-decoration: line-through;
   color: grey;
 }
-/*select {*/
-/*  margin-bottom: 10px;*/
-/*  padding: 9px 15px;*/
-/*  width: 100%;*/
-/*  border: 1px solid rgba(31, 32, 65, 0.25);*/
-/*  border-radius: 4px;*/
-
-/*  &:focus,*/
-/*  &:hover {*/
-/*    outline: none;*/
-/*    border: 1px solid rgba(31, 32, 65, 0.5);*/
-/*  }*/
-/*}*/
 </style>
