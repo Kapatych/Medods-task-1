@@ -168,7 +168,8 @@
               placeholder="ТП №1 отдела УФМС России по Санкт-Петербургу"
             />
           </div>
-          <button type="submit">Создать</button>
+
+          <BaseButton type="submit">Создать</BaseButton>
         </form>
       </div>
     </div>
