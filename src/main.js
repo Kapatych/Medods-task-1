@@ -1,9 +1,9 @@
 import Vue from "vue";
 import App from "./App.vue";
 import Vuelidate from "vuelidate";
-import BaseInput from "@/components/BaseInput";
-import BaseSelect from "@/components/BaseSelect";
-import BaseRadioset from "@/components/BaseRadioset";
+import BaseInput from "@/components/base/BaseInput";
+import BaseSelect from "@/components/base/BaseSelect";
+import BaseRadioset from "@/components/base/BaseRadioset";
 
 Vue.config.productionTip = false;
 Vue.use(Vuelidate);

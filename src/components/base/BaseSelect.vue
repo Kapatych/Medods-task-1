@@ -115,7 +115,7 @@ export default {
   top: 50%;
   right: 0;
   transform: translate(-50%, -50%);
-  background: url("../assets/down-arrow.svg") center center no-repeat;
+  background: url("../../assets/down-arrow.svg") center center no-repeat;
   cursor: pointer;
 }
 
