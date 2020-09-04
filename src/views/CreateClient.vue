@@ -7,47 +7,44 @@
           <div class="fields-row">
             <BaseInput
               label="Фамилия"
-              v-model="client.surname"
+              v-model.trim="client.surname"
               type="text"
               placeholder="Иванов"
             />
             <BaseInput
               label="Имя"
-              v-model="client.name"
+              v-model.trim="client.name"
               type="text"
               placeholder="Иван"
             />
             <BaseInput
               label="Отчество"
-              v-model="client.middleName"
+              v-model.trim="client.middleName"
               type="text"
               placeholder="Иванович"
             />
           </div>
           <div class="fields-row">
-            <div class="fields-group">
-              <div class="fields-group__label">Дата рождения</div>
-              <div class="fields-group__content">
-                <BaseInput
-                  v-model="client.birth.day"
-                  type="text"
-                  placeholder="10"
-                />
-                <BaseInput
-                  v-model="client.birth.month"
-                  type="text"
-                  placeholder="10"
-                />
-                <BaseInput
-                  v-model="client.birth.year"
-                  type="text"
-                  placeholder="2010"
-                />
-              </div>
-            </div>
+            <FieldsGroup label="Дата рождения">
+              <BaseInput
+                v-model.trim.number="client.birth.day"
+                type="text"
+                placeholder="10"
+              />
+              <BaseInput
+                v-model.trim.number="client.birth.month"
+                type="text"
+                placeholder="10"
+              />
+              <BaseInput
+                v-model.trim.number="client.birth.year"
+                type="text"
+                placeholder="2010"
+              />
+            </FieldsGroup>
             <BaseInput
               label="Номер телефона"
-              v-model="client.phoneNumber"
+              v-model.trim.number="client.phoneNumber"
               type="text"
               placeholder="79123456789"
             />
@@ -78,19 +75,19 @@
           <div class="fields-row">
             <BaseInput
               label="Индекс"
-              v-model="client.address.postalCode"
+              v-model.trim.number="client.address.postalCode"
               type="text"
               placeholder="192007"
             />
             <BaseInput
               label="Страна"
-              v-model="client.address.country"
+              v-model.trim="client.address.country"
               type="text"
               placeholder="Россия"
             />
             <BaseInput
               label="Область"
-              v-model="client.address.region"
+              v-model.trim="client.address.region"
               type="text"
               placeholder="Санкт-Петербург"
             />
@@ -98,19 +95,19 @@
           <div class="fields-row">
             <BaseInput
               label="Город"
-              v-model="client.address.city"
+              v-model.trim="client.address.city"
               type="text"
               placeholder="Санкт-Петербург"
             />
             <BaseInput
               label="Улица"
-              v-model="client.address.street"
+              v-model.trim="client.address.street"
               type="text"
               placeholder="Невский проспект"
             />
             <BaseInput
               label="Дом "
-              v-model="client.address.houseNumber"
+              v-model.trim.number="client.address.houseNumber"
               type="text"
               placeholder="12"
             />
@@ -124,47 +121,42 @@
               :options="documents"
               placeholder="Выберите документ"
             />
-            <div class="fields-group">
-              <div class="fields-group__content">
-                <BaseInput
-                  label="Серия"
-                  v-model="client.passport.series"
-                  type="text"
-                  placeholder="4010"
-                />
-                <BaseInput
-                  label="Номер"
-                  v-model="client.passport.number"
-                  type="text"
-                  placeholder="123456"
-                />
-              </div>
-            </div>
-            <div class="fields-group">
-              <div class="fields-group__label">Дата выдачи</div>
-              <div class="fields-group__content">
-                <BaseInput
-                  v-model="client.passport.issuance.day"
-                  type="text"
-                  placeholder="12"
-                />
-                <BaseInput
-                  v-model="client.passport.issuance.month"
-                  type="text"
-                  placeholder="12"
-                />
-                <BaseInput
-                  v-model="client.passport.issuance.year"
-                  type="text"
-                  placeholder="2012"
-                />
-              </div>
-            </div>
+            <FieldsGroup>
+              <BaseInput
+                label="Серия"
+                v-model.trim.number="client.passport.series"
+                type="text"
+                placeholder="4010"
+              />
+              <BaseInput
+                label="Номер"
+                v-model.trim.number="client.passport.number"
+                type="text"
+                placeholder="123456"
+              />
+            </FieldsGroup>
+            <FieldsGroup label="Дата выдачи">
+              <BaseInput
+                v-model.trim.number="client.passport.issuance.day"
+                type="text"
+                placeholder="12"
+              />
+              <BaseInput
+                v-model.trim.number="client.passport.issuance.month"
+                type="text"
+                placeholder="12"
+              />
+              <BaseInput
+                v-model.trim.number="client.passport.issuance.year"
+                type="text"
+                placeholder="2012"
+              />
+            </FieldsGroup>
           </div>
           <div class="fields-row">
             <BaseInput
               label="Кем выдан"
-              v-model="client.passport.place"
+              v-model.trim="client.passport.place"
               type="text"
               inputClass="wide"
               placeholder="ТП №1 отдела УФМС России по Санкт-Петербургу"
@@ -179,6 +171,7 @@
 
 <script>
 // import { required } from "vuelidate/lib/validators";
+import FieldsGroup from "@/components/layout/FieldsGroup.vue";
 export default {
   data: () => ({
     doctors: ["Иванов", "Захаров", "Чернышева"],
@@ -239,7 +232,8 @@ export default {
       };
       console.log(data);
     }
-  }
+  },
+  components: { FieldsGroup }
 };
 </script>
 
@@ -270,20 +264,6 @@ export default {
 
 .fields-row {
   display: flex;
-  /*align-items: center;*/
   margin-bottom: 10px;
-}
-.fields-group {
-  width: 100%;
-  max-width: 260px;
-  &:not(:first-child) {
-    margin-left: 10px;
-  }
-}
-.fields-group__label {
-  font-weight: 600;
-}
-.fields-group__content {
-  display: flex;
 }
 </style>
