@@ -271,48 +271,17 @@ import { required, between, maxValue } from "vuelidate/lib/validators";
 import FieldsGroup from "@/components/layout/FieldsGroup.vue";
 const mustBePhone = value => value.length === 11 && value[0] === "7";
 export default {
-  data: () => ({
-    notice: false,
-    doctors: ["Иванов", "Захаров", "Чернышева"],
-    category: ["VIP", "Проблемные", "ОМС"],
-    documents: ["Паспорт", "Свидетельство о рождении", "Вод. удостоверение"],
-    gender: ["Мужчина", "Женщина"],
-    notifications: ["Не отправлять СМС"],
-    client: {
-      surname: "",
-      name: "",
-      middleName: "",
-      birth: {
-        day: null,
-        month: null,
-        year: null
-      },
-      phoneNumber: "",
-      gender: "",
-      category: [],
-      doctor: "",
-      notifications: [],
-      address: {
-        postalCode: "",
-        country: "",
-        region: "",
-        city: "",
-        street: "",
-        houseNumber: ""
-      },
-      passport: {
-        type: "",
-        series: "",
-        number: "",
-        issuance: {
-          day: null,
-          month: null,
-          year: null
-        },
-        place: ""
-      }
-    }
-  }),
+  data() {
+    return {
+      notice: false,
+      doctors: ["Иванов", "Захаров", "Чернышева"],
+      category: ["VIP", "Проблемные", "ОМС"],
+      documents: ["Паспорт", "Свидетельство о рождении", "Вод. удостоверение"],
+      gender: ["Мужчина", "Женщина"],
+      notifications: ["Не отправлять СМС"],
+      client: this.createEmptyClient()
+    };
+  },
   validations: {
     client: {
       surname: { required },
@@ -341,6 +310,42 @@ export default {
     toggleNoticeHandler() {
       this.notice = !this.notice;
     },
+    createEmptyClient() {
+      return {
+        surname: "",
+        name: "",
+        middleName: "",
+        birth: {
+          day: null,
+          month: null,
+          year: null
+        },
+        phoneNumber: "",
+        gender: "",
+        category: [],
+        doctor: "",
+        notifications: [],
+        address: {
+          postalCode: "",
+          country: "",
+          region: "",
+          city: "",
+          street: "",
+          houseNumber: ""
+        },
+        passport: {
+          type: "",
+          series: "",
+          number: "",
+          issuance: {
+            day: null,
+            month: null,
+            year: null
+          },
+          place: ""
+        }
+      };
+    },
     submitHandler() {
       let data = {
         ...this.client,
@@ -361,6 +366,8 @@ export default {
       this.$v.$touch();
       if (!this.$v.$invalid) {
         this.toggleNoticeHandler();
+        this.client = this.createEmptyClient();
+        this.$v.$reset();
         // Example sending data
         console.log(data);
       }

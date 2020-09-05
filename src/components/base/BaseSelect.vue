@@ -23,7 +23,7 @@
         class="select__option"
         v-for="option in options"
         :key="option"
-        :class="{ 'select__option--active': selectedItems.includes(option) }"
+        :class="{ 'select__option--active': value.includes(option) }"
         @click="selectItemHandler(option)"
       >
         {{ option }}
@@ -38,7 +38,6 @@ import formFieldMixin from "@/mixins/formFieldMixin";
 export default {
   mixins: [formFieldMixin],
   data: () => ({
-    selectedItems: [],
     active: false
   }),
   props: {
@@ -53,7 +52,7 @@ export default {
   },
   computed: {
     normalizeValues() {
-      return this.selectedItems.join(", ");
+      return this.value.join(", ");
     }
   },
   methods: {
@@ -62,15 +61,16 @@ export default {
     },
     selectItemHandler(item) {
       if (this.multi) {
+        let selectedItems = [...this.value];
         if (this.value.includes(item)) {
           // delete value
-          let idx = this.selectedItems.findIndex(i => i === item);
-          this.selectedItems.splice(idx, 1);
+          let idx = selectedItems.findIndex(i => i === item);
+          selectedItems.splice(idx, 1);
         } else {
           // add value
-          this.selectedItems.push(item);
+          selectedItems.push(item);
         }
-        this.$emit("input", this.selectedItems);
+        this.$emit("input", selectedItems);
       } else {
         this.$emit("input", item);
       }
@@ -84,7 +84,6 @@ export default {
   },
   mounted() {
     document.addEventListener("click", e => this.outsideClickHandler(e));
-    this.selectedItems = [...this.value];
   },
   beforeDestroy() {
     document.removeEventListener("click", e => this.outsideClickHandler(e));
