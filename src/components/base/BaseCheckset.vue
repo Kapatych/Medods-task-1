@@ -50,10 +50,7 @@ export default {
 .checkbox-set {
   width: 100%;
   max-width: 260px;
-
-  &:not(:first-child) {
-    margin-left: 10px;
-  }
+  padding-bottom: 20px;
 }
 .checkbox-set__label {
   font-weight: 600;
@@ -67,9 +64,9 @@ export default {
   cursor: pointer;
   user-select: none;
 
-  &:not(:first-child) {
-    margin-left: 10px;
-  }
+  /*&:not(:first-child) {*/
+  /*  margin-left: 10px;*/
+  /*}*/
 }
 input {
   position: absolute;
@@ -106,6 +103,13 @@ input:checked + .option__control {
     border-style: solid;
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);
+  }
+}
+@media screen and (min-width: 768px) {
+  .checkbox-set {
+    &:not(:first-child) {
+      margin-left: 10px;
+    }
   }
 }
 </style>

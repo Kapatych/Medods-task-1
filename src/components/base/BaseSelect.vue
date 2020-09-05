@@ -94,12 +94,9 @@ export default {
 
 <style lang="scss" scoped>
 .select {
+  width: 100%;
   position: relative;
-  min-width: 260px;
   padding-bottom: 20px;
-  &:not(:first-child) {
-    margin-left: 10px;
-  }
 }
 .select__label {
   font-weight: 600;
@@ -144,7 +141,7 @@ export default {
 }
 .select__list {
   position: absolute;
-  top: 98%;
+  top: calc(100% - 21px);
   padding: 0 15px 10px;
   width: 100%;
   background: #fff;
@@ -161,5 +158,13 @@ export default {
 .select__option--active {
   text-decoration: line-through;
   color: grey;
+}
+
+@media screen and (min-width: 768px) {
+  .select {
+    &:not(:first-child) {
+      margin-left: 10px;
+    }
+  }
 }
 </style>

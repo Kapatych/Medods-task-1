@@ -32,11 +32,7 @@ export default {
 .field {
   position: relative;
   width: 100%;
-  max-width: 260px;
   padding-bottom: 20px;
-  &:not(:first-child) {
-    margin-left: 10px;
-  }
 
   &.wide {
     max-width: none;
@@ -61,6 +57,15 @@ input {
 
   &.error {
     border: 1px solid red;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .field {
+    max-width: 260px;
+    &:not(:first-child) {
+      margin-left: 10px;
+    }
   }
 }
 </style>

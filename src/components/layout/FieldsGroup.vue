@@ -21,10 +21,12 @@ export default {
 <style lang="scss" scoped>
 .fields-group {
   width: 100%;
-  max-width: 260px;
   position: relative;
-  &:not(:first-child) {
-    margin-left: 10px;
+
+  .field {
+    &:not(:first-child) {
+      margin-left: 10px;
+    }
   }
 }
 .fields-group__label {
@@ -32,5 +34,13 @@ export default {
 }
 .fields-group__content {
   display: flex;
+}
+@media screen and (min-width: 768px) {
+  .fields-group {
+    max-width: 260px;
+    &:not(:first-child) {
+      margin-left: 10px;
+    }
+  }
 }
 </style>

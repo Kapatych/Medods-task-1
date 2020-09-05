@@ -361,6 +361,7 @@ export default {
       this.$v.$touch();
       if (!this.$v.$invalid) {
         this.toggleNoticeHandler();
+        // Example sending data
         console.log(data);
       }
     }

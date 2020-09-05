@@ -32,10 +32,7 @@ export default {
 <style lang="scss" scoped>
 .radioset {
   width: 100%;
-  max-width: 260px;
-  &:not(:first-child) {
-    margin-left: 10px;
-  }
+  padding-bottom: 20px;
 
   &.column {
     .radioset__content {
@@ -111,5 +108,14 @@ input {
 
 .radio__label {
   cursor: pointer;
+}
+
+@media screen and (min-width: 768px) {
+  .radioset {
+    max-width: 260px;
+    &:not(:first-child) {
+      margin-left: 10px;
+    }
+  }
 }
 </style>
