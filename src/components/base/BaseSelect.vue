@@ -14,6 +14,7 @@
         type="text"
         readonly="readonly"
         v-bind="$attrs"
+        v-on="$listeners"
       />
       <span class="select__icon" @click.stop="toggleHandler"></span>
     </div>
@@ -28,6 +29,7 @@
         {{ option }}
       </p>
     </div>
+    <slot></slot>
   </div>
 </template>
 

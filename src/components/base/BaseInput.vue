@@ -9,6 +9,7 @@
       @input="updateValue"
       v-on="listeners"
     />
+    <slot></slot>
   </div>
 </template>
 
@@ -39,9 +40,11 @@ export default {
     max-width: none;
   }
 }
+
 label {
   font-weight: 600;
 }
+
 input {
   padding: 10px 15px;
   width: 100%;
@@ -52,6 +55,10 @@ input {
   &:hover {
     outline: none;
     border: 1px solid rgba(31, 32, 65, 0.5);
+  }
+
+  &.error {
+    border: 1px solid red;
   }
 }
 </style>

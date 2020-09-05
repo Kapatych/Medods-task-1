@@ -4,6 +4,7 @@
     <div class="fields-group__content">
       <slot></slot>
     </div>
+    <slot name="error"></slot>
   </div>
 </template>
 

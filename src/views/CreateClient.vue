@@ -6,17 +6,31 @@
         <form @submit.prevent="submitHandler">
           <div class="fields-row">
             <BaseInput
-              label="Фамилия"
+              label="Фамилия*"
               v-model.trim="client.surname"
               type="text"
               placeholder="Иванов"
-            />
+              @blur="$v.client.surname.$touch()"
+            >
+              <div v-if="$v.client.surname.$error" class="errorMessage">
+                <span v-if="!$v.client.surname.required">
+                  Заполните поле
+                </span>
+              </div>
+            </BaseInput>
             <BaseInput
-              label="Имя"
+              label="Имя*"
               v-model.trim="client.name"
               type="text"
               placeholder="Иван"
-            />
+              @blur="$v.client.name.$touch()"
+            >
+              <div v-if="$v.client.name.$error" class="errorMessage">
+                <span v-if="!$v.client.name.required">
+                  Заполните поле
+                </span>
+              </div>
+            </BaseInput>
             <BaseInput
               label="Отчество"
               v-model.trim="client.middleName"
@@ -25,29 +39,60 @@
             />
           </div>
           <div class="fields-row">
-            <FieldsGroup label="Дата рождения">
+            <FieldsGroup label="Дата рождения*">
               <BaseInput
                 v-model.trim.number="client.birth.day"
                 type="text"
                 placeholder="10"
+                @blur="$v.client.birth.day.$touch()"
               />
               <BaseInput
                 v-model.trim.number="client.birth.month"
                 type="text"
                 placeholder="10"
+                @blur="$v.client.birth.month.$touch()"
               />
               <BaseInput
                 v-model.trim.number="client.birth.year"
                 type="text"
                 placeholder="2010"
+                @blur="$v.client.birth.year.$touch()"
               />
+              <template v-slot:error>
+                <div v-if="$v.client.birth.$error" class="errorMessage">
+                  <span
+                    v-if="
+                      !$v.client.birth.day.between ||
+                        !$v.client.birth.month.between ||
+                        !$v.client.birth.year.maxValue
+                    "
+                    >Неверный формат даты</span
+                  >
+                  <span v-else>Заполните поле полностью</span>
+                </div>
+              </template>
             </FieldsGroup>
             <BaseInput
-              label="Номер телефона"
-              v-model.trim.number="client.phoneNumber"
+              label="Номер телефона*"
+              v-model.trim="client.phoneNumber"
               type="text"
               placeholder="79123456789"
-            />
+              @blur="$v.client.phoneNumber.$touch()"
+            >
+              <div v-if="$v.client.phoneNumber.$error" class="errorMessage">
+                <span v-if="!$v.client.phoneNumber.required">
+                  Заполните поле
+                </span>
+                <span
+                  v-if="
+                    $v.client.phoneNumber.required &&
+                      !$v.client.phoneNumber.mustBePhone
+                  "
+                >
+                  Некорректный номер
+                </span>
+              </div>
+            </BaseInput>
             <BaseRadioset
               label="Пол"
               name="gender"
@@ -57,12 +102,19 @@
           </div>
           <div class="fields-row">
             <BaseSelect
-              label="Группа клиентов"
+              label="Группа клиентов*"
               v-model="client.category"
               :options="category"
               :multi="true"
               placeholder="Выберите группу"
-            />
+              @blur="$v.client.category.$touch()"
+            >
+              <div v-if="$v.client.category.$error" class="errorMessage">
+                <span v-if="!$v.client.category.required">
+                  Выберите вариант из списка
+                </span>
+              </div>
+            </BaseSelect>
             <BaseSelect
               label="Лечащий врач"
               v-model="client.doctor"
@@ -100,11 +152,18 @@
           </div>
           <div class="fields-row">
             <BaseInput
-              label="Город"
+              label="Город*"
               v-model.trim="client.address.city"
               type="text"
               placeholder="Санкт-Петербург"
-            />
+              @blur="$v.client.address.city.$touch()"
+            >
+              <div v-if="$v.client.address.city.$error" class="errorMessage">
+                <span v-if="!$v.client.address.city.required">
+                  Заполните поле
+                </span>
+              </div>
+            </BaseInput>
             <BaseInput
               label="Улица"
               v-model.trim="client.address.street"
@@ -122,11 +181,18 @@
           <h3>Документ</h3>
           <div class="fields-row">
             <BaseSelect
-              label="Тип документа"
+              label="Тип документа*"
               v-model="client.passport.type"
               :options="documents"
               placeholder="Выберите документ"
-            />
+              @blur="$v.client.passport.type.$touch()"
+            >
+              <div v-if="$v.client.passport.type.$error" class="errorMessage">
+                <span v-if="!$v.client.passport.type.required">
+                  Выберите вариант из списка
+                </span>
+              </div>
+            </BaseSelect>
             <FieldsGroup>
               <BaseInput
                 label="Серия"
@@ -141,22 +207,41 @@
                 placeholder="123456"
               />
             </FieldsGroup>
-            <FieldsGroup label="Дата выдачи">
+            <FieldsGroup label="Дата выдачи*">
               <BaseInput
                 v-model.trim.number="client.passport.issuance.day"
                 type="text"
                 placeholder="12"
+                @blur="$v.client.passport.issuance.day.$touch()"
               />
               <BaseInput
                 v-model.trim.number="client.passport.issuance.month"
                 type="text"
                 placeholder="12"
+                @blur="$v.client.passport.issuance.month.$touch()"
               />
               <BaseInput
                 v-model.trim.number="client.passport.issuance.year"
                 type="text"
                 placeholder="2012"
+                @blur="$v.client.passport.issuance.year.$touch()"
               />
+              <template v-slot:error>
+                <div
+                  v-if="$v.client.passport.issuance.$error"
+                  class="errorMessage"
+                >
+                  <span
+                    v-if="
+                      !$v.client.passport.issuance.day.between ||
+                        !$v.client.passport.issuance.month.between ||
+                        !$v.client.passport.issuance.year.maxValue
+                    "
+                    >Неверный формат даты</span
+                  >
+                  <span v-else>Заполните поле полностью</span>
+                </div>
+              </template>
             </FieldsGroup>
           </div>
           <div class="fields-row">
@@ -177,8 +262,9 @@
 </template>
 
 <script>
-// import { required } from "vuelidate/lib/validators";
+import { required, between, maxValue } from "vuelidate/lib/validators";
 import FieldsGroup from "@/components/layout/FieldsGroup.vue";
+const mustBePhone = value => value.length === 11 && value[0] === "7";
 export default {
   data: () => ({
     doctors: ["Иванов", "Захаров", "Чернышева"],
@@ -195,8 +281,8 @@ export default {
         month: null,
         year: null
       },
-      phoneNumber: null,
-      gender: "man",
+      phoneNumber: "",
+      gender: "",
       category: [],
       doctor: "",
       notifications: [],
@@ -221,6 +307,30 @@ export default {
       }
     }
   }),
+  validations: {
+    client: {
+      surname: { required },
+      name: { required },
+      birth: {
+        day: { required, between: between(1, 31) },
+        month: { required, between: between(1, 12) },
+        year: { required, maxValue: maxValue(new Date().getFullYear()) }
+      },
+      phoneNumber: { required, mustBePhone },
+      category: { required },
+      address: {
+        city: { required }
+      },
+      passport: {
+        type: { required },
+        issuance: {
+          day: { required, between: between(1, 31) },
+          month: { required, between: between(1, 12) },
+          year: { required, maxValue: maxValue(new Date().getFullYear()) }
+        }
+      }
+    }
+  },
   methods: {
     submitHandler() {
       let data = {
@@ -239,6 +349,7 @@ export default {
           )
         }
       };
+      this.$v.$touch();
       console.log(data);
     }
   },

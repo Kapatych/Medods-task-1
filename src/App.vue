@@ -63,4 +63,9 @@ p {
   border-top: 1px solid rgba(31, 32, 65, 0.1);
   border-bottom: 1px solid rgba(31, 32, 65, 0.1);
 }
+
+.errorMessage {
+  color: red;
+  font-size: 12px;
+}
 </style>
