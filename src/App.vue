@@ -64,8 +64,14 @@ p {
   border-bottom: 1px solid rgba(31, 32, 65, 0.1);
 }
 
+.fields-row {
+  display: flex;
+}
+
 .errorMessage {
   color: red;
   font-size: 12px;
+  position: absolute;
+  bottom: 0;
 }
 </style>

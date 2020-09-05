@@ -22,6 +22,7 @@ export default {
 .fields-group {
   width: 100%;
   max-width: 260px;
+  position: relative;
   &:not(:first-child) {
     margin-left: 10px;
   }

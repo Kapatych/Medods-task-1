@@ -96,6 +96,7 @@ export default {
 .select {
   position: relative;
   min-width: 260px;
+  padding-bottom: 20px;
   &:not(:first-child) {
     margin-left: 10px;
   }

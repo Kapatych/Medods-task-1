@@ -258,6 +258,11 @@
         </form>
       </div>
     </div>
+    <BaseNotice
+      v-if="notice"
+      text="Новый клиент успешно создан"
+      @clear="toggleNoticeHandler"
+    />
   </div>
 </template>
 
@@ -267,6 +272,7 @@ import FieldsGroup from "@/components/layout/FieldsGroup.vue";
 const mustBePhone = value => value.length === 11 && value[0] === "7";
 export default {
   data: () => ({
+    notice: false,
     doctors: ["Иванов", "Захаров", "Чернышева"],
     category: ["VIP", "Проблемные", "ОМС"],
     documents: ["Паспорт", "Свидетельство о рождении", "Вод. удостоверение"],
@@ -332,6 +338,9 @@ export default {
     }
   },
   methods: {
+    toggleNoticeHandler() {
+      this.notice = !this.notice;
+    },
     submitHandler() {
       let data = {
         ...this.client,
@@ -350,7 +359,10 @@ export default {
         }
       };
       this.$v.$touch();
-      console.log(data);
+      if (!this.$v.$invalid) {
+        this.toggleNoticeHandler();
+        console.log(data);
+      }
     }
   },
   components: { FieldsGroup }
@@ -367,7 +379,7 @@ export default {
   width: 100%;
   max-width: 900px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 40px 20px;
   display: flex;
   flex-direction: column;
 }
@@ -380,10 +392,5 @@ export default {
 }
 .create-client__title {
   margin-top: 0;
-}
-
-.fields-row {
-  display: flex;
-  margin-bottom: 10px;
 }
 </style>
