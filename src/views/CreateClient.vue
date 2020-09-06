@@ -16,6 +16,9 @@
                 <span v-if="!$v.client.surname.required">
                   Заполните поле
                 </span>
+                <span v-if="!$v.client.surname.mustBeCyrWord">
+                  Только кириллические буквы
+                </span>
               </div>
             </BaseInput>
             <BaseInput
@@ -29,6 +32,9 @@
                 <span v-if="!$v.client.name.required">
                   Заполните поле
                 </span>
+                <span v-if="!$v.client.name.mustBeCyrWord">
+                  Только кириллические буквы
+                </span>
               </div>
             </BaseInput>
             <BaseInput
@@ -36,7 +42,14 @@
               v-model.trim="client.middleName"
               type="text"
               placeholder="Иванович"
-            />
+              @blur="$v.client.middleName.$touch()"
+            >
+              <div v-if="$v.client.middleName.$error" class="errorMessage">
+                <span v-if="!$v.client.middleName.mustBeCyrWord">
+                  Только кириллические буквы
+                </span>
+              </div>
+            </BaseInput>
           </div>
           <div class="fields-row">
             <FieldsGroup label="Дата рождения*">
@@ -133,22 +146,46 @@
           <div class="fields-row">
             <BaseInput
               label="Индекс"
-              v-model.trim.number="client.address.postalCode"
+              v-model.trim="client.address.postalCode"
               type="text"
               placeholder="192007"
-            />
+              @blur="$v.client.address.postalCode.$touch()"
+            >
+              <div
+                v-if="$v.client.address.postalCode.$error"
+                class="errorMessage"
+              >
+                <span v-if="!$v.client.address.postalCode.mustBeCode">
+                  Неверный формат
+                </span>
+              </div>
+            </BaseInput>
             <BaseInput
               label="Страна"
               v-model.trim="client.address.country"
               type="text"
               placeholder="Россия"
-            />
+              @blur="$v.client.address.country.$touch()"
+            >
+              <div v-if="$v.client.address.country.$error" class="errorMessage">
+                <span v-if="!$v.client.address.country.mustBeCyrWord">
+                  Только кириллические буквы
+                </span>
+              </div>
+            </BaseInput>
             <BaseInput
               label="Область"
               v-model.trim="client.address.region"
               type="text"
               placeholder="Санкт-Петербург"
-            />
+              @blur="$v.client.address.region.$touch()"
+            >
+              <div v-if="$v.client.address.region.$error" class="errorMessage">
+                <span v-if="!$v.client.address.region.mustBeCyrWord">
+                  Только кириллические буквы
+                </span>
+              </div>
+            </BaseInput>
           </div>
           <div class="fields-row">
             <BaseInput
@@ -162,6 +199,9 @@
                 <span v-if="!$v.client.address.city.required">
                   Заполните поле
                 </span>
+                <span v-if="!$v.client.address.city.mustBeCyrWord">
+                  Только кириллические буквы
+                </span>
               </div>
             </BaseInput>
             <BaseInput
@@ -169,7 +209,14 @@
               v-model.trim="client.address.street"
               type="text"
               placeholder="Невский проспект"
-            />
+              @blur="$v.client.address.street.$touch()"
+            >
+              <div v-if="$v.client.address.street.$error" class="errorMessage">
+                <span v-if="!$v.client.address.street.mustBeCyrWord">
+                  Только кириллические буквы
+                </span>
+              </div>
+            </BaseInput>
             <BaseInput
               label="Дом "
               v-model.trim.number="client.address.houseNumber"
@@ -196,16 +243,26 @@
             <FieldsGroup>
               <BaseInput
                 label="Серия"
-                v-model.trim.number="client.passport.series"
+                v-model.trim="client.passport.series"
                 type="text"
                 placeholder="4010"
               />
               <BaseInput
                 label="Номер"
-                v-model.trim.number="client.passport.number"
+                v-model.trim="client.passport.number"
                 type="text"
                 placeholder="123456"
-              />
+                @blur="$v.client.passport.number.$touch()"
+              >
+                <div
+                  v-if="$v.client.passport.number.$error"
+                  class="errorMessage"
+                >
+                  <span v-if="!$v.client.passport.number.mustBeCode">
+                    Неверный формат
+                  </span>
+                </div>
+              </BaseInput>
             </FieldsGroup>
             <FieldsGroup label="Дата выдачи*">
               <BaseInput
@@ -251,7 +308,14 @@
               type="text"
               inputClass="wide"
               placeholder="ТП №1 отдела УФМС России по Санкт-Петербургу"
-            />
+              @blur="$v.client.passport.place.$touch()"
+            >
+              <div v-if="$v.client.passport.place.$error" class="errorMessage">
+                <span v-if="!$v.client.passport.place.mustBeCyrWord">
+                  Только кириллические буквы
+                </span>
+              </div>
+            </BaseInput>
           </div>
 
           <BaseButton type="submit">Создать</BaseButton>
@@ -269,7 +333,10 @@
 <script>
 import { required, between, maxValue } from "vuelidate/lib/validators";
 import FieldsGroup from "@/components/layout/FieldsGroup.vue";
-const mustBePhone = value => value.length === 11 && value[0] === "7";
+const mustBePhone = value =>
+  value.length === 11 && /^[0-9]*$/.test(value) && value[0] === "7";
+const mustBeCode = value => value.length === 6 && /^[0-9]*$/.test(value);
+const mustBeCyrWord = value => /^[А-ЯЁа-яё]*$/.test(value);
 export default {
   data() {
     return {
@@ -284,8 +351,9 @@ export default {
   },
   validations: {
     client: {
-      surname: { required },
-      name: { required },
+      surname: { required, mustBeCyrWord },
+      name: { required, mustBeCyrWord },
+      middleName: { mustBeCyrWord },
       birth: {
         day: { required, between: between(1, 31) },
         month: { required, between: between(1, 12) },
@@ -294,15 +362,23 @@ export default {
       phoneNumber: { required, mustBePhone },
       category: { required },
       address: {
-        city: { required }
+        postalCode: { mustBeCode },
+        country: { mustBeCyrWord },
+        region: { mustBeCyrWord },
+        city: { required, mustBeCyrWord },
+        street: { mustBeCyrWord },
+        houseNumber: {}
       },
       passport: {
         type: { required },
+        series: "",
+        number: { mustBeCode },
         issuance: {
           day: { required, between: between(1, 31) },
           month: { required, between: between(1, 12) },
           year: { required, maxValue: maxValue(new Date().getFullYear()) }
-        }
+        },
+        place: { mustBeCyrWord }
       }
     }
   },
