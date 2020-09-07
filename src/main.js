@@ -9,6 +9,8 @@ import BaseButton from "@/components/base/BaseButton";
 import BaseNotice from "@/components/base/BaseNotice";
 
 Vue.config.productionTip = false;
+Vue.config.devtools = true;
+
 Vue.use(Vuelidate);
 Vue.component("BaseInput", BaseInput);
 Vue.component("BaseSelect", BaseSelect);
