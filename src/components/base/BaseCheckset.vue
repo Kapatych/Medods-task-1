@@ -63,10 +63,6 @@ export default {
   align-items: center;
   cursor: pointer;
   user-select: none;
-
-  /*&:not(:first-child) {*/
-  /*  margin-left: 10px;*/
-  /*}*/
 }
 input {
   position: absolute;
